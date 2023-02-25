@@ -1,25 +1,36 @@
-import logo from './logo.svg';
-import './App.css';
+import Container from 'react-bootstrap/Container';
+import { useApi } from './hooks/useApi';
+import MessageForm from './components/message/MessageForm';
+import Log from './components/log/Log';
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+
+  let state = useApi('http://localhost:8081/api/v1/log/')
+  
+  if(state.status==='fetched'){
+    
+    return (
+      <Container>
+        <h1>Notification App</h1>
+        <MessageForm />
+        <Log data={state} />    
+      </Container>
+    )
+
+  }else{
+
+    return (
+      <>
+      <h1>Notification App</h1>
+      <p>Loading...</p>
+      </>
+      
+    );
+
+  }
 }
 
 export default App;
+
+
+
