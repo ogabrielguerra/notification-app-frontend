@@ -1,37 +1,59 @@
 import React, { useState } from 'react';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
+import { useStompClient } from "react-stomp-hooks";
 
 const MessageForm = () => {
-
     const [httpsStatusReceived, setHttpStatusReceived] = useState(null);
     const [messageBody, setMessageBody] = useState("")
     const [messageTypeId, setMessageTipeId] = useState(1)
     const [messageChannelId, setMessageChannelId] = useState(1)
+    const stompClient = useStompClient();
 
     const handleSubmit = (event) => {
-        event.preventDefault();   
+        event.preventDefault();
+
+        const payload = {};
+        payload.body = messageBody;
+        payload.messageType = { id: messageTypeId };
+        payload.channel = { id: messageChannelId };
+        payload.user = { id: 2 };
+
+        if (messageTypeId != 3) {
+            console.log(messageTypeId)
+            sendEmailOrSMS(payload);
+        } else {
+            sendPush(payload);
+        }
+    }
+
+    const sendPush = (payload) => {
+        console.log("Sending push")
+        const mapTopic = '/app/hellos';
+
+        if (stompClient) {
+            try {
+                console.log('send message to', mapTopic)
+                stompClient.publish({
+                    destination: mapTopic,
+                    body: JSON.stringify(payload)
+                });
+            } catch (error) {
+                console.log('Error:', error);
+            }
+        }
+    }
+
+    const sendEmailOrSMS = (payload) => {
         const url = "http://localhost:8080/api/v1/message/send"
 
-        const payload = {
-            'body': '', 
-            'messageType': {'id': ''},
-            'channel': {'id': ''},
-            'user': {'id': 2},
-          };    
-
-        payload.body = messageBody;
-        payload.messageType.id = messageTypeId;
-        payload.channel.id = messageChannelId;
- 
-        console.log(payload);
         fetch(url, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify(payload)
-            })
+        })
             .then(response => {
                 setHttpStatusReceived(response.status);
                 setMessageBody("")
@@ -46,13 +68,8 @@ const MessageForm = () => {
         setMessageBody(e.target.value)
     }
 
-    const handleMessageTypeChange = (e) =>{
-        setMessageTipeId(e.target.value)
-    }
-
-    const handleMessageChannelChange = (e) =>{
-        setMessageChannelId(e.target.value)
-    }
+    const handleMessageTypeChange = (e) => setMessageTipeId(e.target.value);
+    const handleMessageChannelChange = (e) => setMessageChannelId(e.target.value);
 
     return (
         <Form onSubmit={handleSubmit}>
@@ -72,15 +89,11 @@ const MessageForm = () => {
 
             <Form.Group className="mb-3 mt-3" controlId="log.message">
                 <Form.Label>Message</Form.Label>
-                <Form.Control as="textarea" rows={3} onChange={handleMessageChange} value={messageBody}/>
+                <Form.Control as="textarea" rows={3} onChange={handleMessageChange} value={messageBody} />
             </Form.Group>
 
-            <Button variant="primary" type="submit" >
-                Send
-            </Button>
-            { 
-                httpsStatusReceived === 201 ? <div>Message sent!</div> : <div></div>
-            }
+            <Button variant="primary" type="submit">Send</Button>
+            {httpsStatusReceived === 201 ? <div>Message sent!</div> : <div></div>}
         </Form>
     )
 }
