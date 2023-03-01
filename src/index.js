@@ -7,8 +7,14 @@ import App from './App';
 import Base from './components/Base';
 import SeeMessages from './components/SeeMessages';
 import SendMessage from './components/SendMessage';
+import {
+    StompSessionProvider,
+} from "react-stomp-hooks";
+
+const urlSocket = 'http://localhost:8080/gs-guide-websocket';
 
 const router = createBrowserRouter(
+    
     [
         {
             path: "/",
@@ -17,11 +23,11 @@ const router = createBrowserRouter(
             children: [
                 {
                     path: "/",
-                    element: <Container><App /></Container>,
+                    element: <StompSessionProvider url={urlSocket}><App /></StompSessionProvider>,
                 },
                 {
                     path: "/send-message",
-                    element: <SendMessage/>,
+                    element: <StompSessionProvider url={urlSocket}><SendMessage/></StompSessionProvider>,
                 },
                 {
                   path: "/see-messages",
