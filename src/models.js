@@ -1,18 +1,21 @@
 const messageStatus = {
-    0 : "Sent",
-    1: "Received",
-    2: "Read"
+    1 : "Sent",
+    2: "Received",
+    3: "Read"
   };
+
+const messageType = {
+    1: "SMS",
+    2: "E-mail",
+    3: "Push Notification"
+  };  
 
 const messagePost = {
     "message": {
-        "user": {
-            "id": "1"
-        },
-        "body": {
-            "content": "Dummy messages for general purposes."
-        },
-        "channel_id": "1"
+        "id_type": "1",
+        "id_user": "1",
+        "id_channel": "1",
+        "body": "Dummy messages for general purposes.",
     }
 }  
 

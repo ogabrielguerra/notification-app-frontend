@@ -1,13 +1,14 @@
 const Row = (props)=>{ 
+  
     let data = props.data;
     const name = data.user.name;
-    const message = data.message.body.content;
-    const channel = data.message.channel;
+    const message = data.body;
+    const channel = data.channel.name;
+
     return (
       <>
-        <div>Name: {name}</div>
-        <div>Message: {message}</div>
-        <div>Destination: {channel}</div>
+        <div><b>From {name} to {channel} channel.</b></div>
+        <div>{message}</div> 
         <hr/>
       </>
     )

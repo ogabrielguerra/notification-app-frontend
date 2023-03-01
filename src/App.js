@@ -1,36 +1,22 @@
-import Container from 'react-bootstrap/Container';
-import { useApi } from './hooks/useApi';
-import MessageForm from './components/message/MessageForm';
-import Log from './components/log/Log';
+import Subscribe from './components/stomp/Subscribe';
+import SendMessage from './components/stomp/SendMessage';
+import {
+  StompSessionProvider,
+} from "react-stomp-hooks";
 
-function App() {
+const App = () => {
+  const urlSocket = 'http://localhost:8080/gs-guide-websocket';
+  const mapTopic = '/app/hellos';
+  const subscribeTopic = '/topic/greetings';
 
-  let state = useApi('http://localhost:8081/api/v1/log/')
-  
-  if(state.status==='fetched'){
-    
-    return (
-      <Container>
-        <h1>Notification App</h1>
-        <MessageForm />
-        <Log data={state} />    
-      </Container>
-    )
-
-  }else{
-
-    return (
+  return (
       <>
-      <h1>Notification App</h1>
-      <p>Loading...</p>
+      <StompSessionProvider url={urlSocket}>
+        <Subscribe topic={subscribeTopic}/>
+        <SendMessage topic={subscribeTopic} mapTopic={mapTopic}/>
+      </StompSessionProvider> 
       </>
-      
-    );
-
-  }
+  )
 }
 
 export default App;
-
-
-

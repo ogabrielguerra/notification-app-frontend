@@ -5,36 +5,36 @@ import Form from 'react-bootstrap/Form';
 const MessageForm = () => {
 
     const [httpsStatusReceived, setHttpStatusReceived] = useState(null);
+    const [messageBody, setMessageBody] = useState("")
+    const [messageTypeId, setMessageTipeId] = useState(1)
+    const [messageChannelId, setMessageChannelId] = useState(1)
 
     const handleSubmit = (event) => {
         event.preventDefault();   
+        const url = "http://localhost:8080/api/v1/message/send"
 
-        const url = "http://localhost:8081/api/v1/message"
         const payload = {
-            "message": {
-                "user": {
-                    "id": "1"
-                },
-                "body": {
-                    "content": "Dummy messages for general purposes."
-                },
-                "channel_id": "1"
-            }
-        };
+            'body': '', 
+            'messageType': {'id': ''},
+            'channel': {'id': ''},
+            'user': {'id': 2},
+          };    
 
-
-        
-
+        payload.body = messageBody;
+        payload.messageType.id = messageTypeId;
+        payload.channel.id = messageChannelId;
+ 
+        console.log(payload);
         fetch(url, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({})
+            body: JSON.stringify(payload)
             })
             .then(response => {
                 setHttpStatusReceived(response.status);
-                setFormValue("")
+                setMessageBody("")
             })
             .catch(error => {
                 console.log('Handle errors', error)
@@ -43,30 +43,43 @@ const MessageForm = () => {
 
     const handleMessageChange = (e) => {
         setHttpStatusReceived(null)
-        setFormValue(e.target.value)
+        setMessageBody(e.target.value)
     }
 
-    const [formValue, setFormValue] = useState(null)
+    const handleMessageTypeChange = (e) =>{
+        setMessageTipeId(e.target.value)
+    }
+
+    const handleMessageChannelChange = (e) =>{
+        setMessageChannelId(e.target.value)
+    }
 
     return (
         <Form onSubmit={handleSubmit}>
-            <Form.Select aria-label="Select a category">
+            <Form.Select defaultValue={1} aria-label="Select a message type" onChange={handleMessageTypeChange}>
+                <option>Select a message type:</option>
+                <option value="1">Email</option>
+                <option value="2">SMS</option>
+                <option value="3">Push</option>
+            </Form.Select>
+
+            <Form.Select defaultValue={1} className="mb-3 mt-3" aria-label="Select a category" onChange={handleMessageChannelChange}>
                 <option>Select a category:</option>
                 <option value="1">Finances</option>
                 <option value="2">Movies</option>
                 <option value="3">Sports</option>
             </Form.Select>
 
-            <Form.Group className="mb-3" controlId="log.message">
+            <Form.Group className="mb-3 mt-3" controlId="log.message">
                 <Form.Label>Message</Form.Label>
-                <Form.Control as="textarea" rows={3} onChange={handleMessageChange} value={formValue}/>
+                <Form.Control as="textarea" rows={3} onChange={handleMessageChange} value={messageBody}/>
             </Form.Group>
 
             <Button variant="primary" type="submit" >
                 Send
             </Button>
             { 
-                httpsStatusReceived === 201 ? <div>Message sent!</div> : null
+                httpsStatusReceived === 201 ? <div>Message sent!</div> : <div></div>
             }
         </Form>
     )
