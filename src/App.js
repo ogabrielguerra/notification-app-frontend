@@ -9,7 +9,7 @@ const App = () => {
   return (
       <>
         <Subscribe topic={subscribeTopic}/>
-        <SendMessage topic={subscribeTopic} mapTopic={mapTopic}/>
+        {/* <SendMessage topic={subscribeTopic} mapTopic={mapTopic}/> */}
       </>
   )
 }
