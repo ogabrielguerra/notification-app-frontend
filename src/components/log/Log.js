@@ -1,14 +1,15 @@
 import Row from './Row';
 
-const Log = (props)=>{
+const Log = ({data})=>{
   
-    let mdata = props.data.data;
+    let messages = data.data;
     let key = 0;
   
     return (
       <>
+      <h2 className='mb-3'>Registered Messages</h2>
       {
-        mdata.map((item)=>{
+        messages.map((item)=>{
           key += 1;
           return <Row key={`logRow_${key}`} data={item}/>
         })

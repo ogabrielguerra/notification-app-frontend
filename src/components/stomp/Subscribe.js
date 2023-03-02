@@ -16,7 +16,7 @@ const Subscribe = ({ topic }) => {
     if(lastMessage){
         
         const data = JSON.parse(lastMessage); 
-        console.log(data.body)
+        console.log(data.user)
         return (
             <div>
                 {/* Last Message: {lastMessage} */}

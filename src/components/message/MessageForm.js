@@ -19,12 +19,9 @@ const MessageForm = () => {
         payload.channel = { id: messageChannelId };
         payload.user = { id: 2 };
 
-        if (messageTypeId != 3) {
-            console.log(messageTypeId)
-            sendEmailOrSMS(payload);
-        } else {
-            sendPush(payload);
-        }
+        (messageTypeId != 3) ? sendEmailOrSMS(payload) : sendPush(payload);
+        
+        setMessageBody("");
     }
 
     const sendPush = (payload) => {
