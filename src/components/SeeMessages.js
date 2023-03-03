@@ -7,11 +7,7 @@ const SeeMessages = ()=>{
     if(state.status==='fetched'){
         return <Log data={state} />; 
     }else{
-        return (
-            <div>
-            Loading...
-            </div>
-        )
+        return <div>Loading...</div>;
     }
 }
 

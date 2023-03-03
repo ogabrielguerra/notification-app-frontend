@@ -6,15 +6,15 @@ import {
 
 const Subscribe = ({ topic }) => {
     const [lastMessage, setLastMessage] = useState(null);
-    const [showA, setShowA] = useState(true);
-    const toggleShowA = () => setShowA(!showA);
+    const [showToast, setShowToast] = useState(true);
+    const toggleShowToast = () => setShowToast(!showToast);
     useSubscription(topic, (message) => setLastMessage(message.body));
 
     if(lastMessage){
         const data = JSON.parse(lastMessage); 
         return (
             <div>
-                <Toast show={showA} onClose={toggleShowA}>
+                <Toast show={showToast} onClose={toggleShowToast}>
                     <Toast.Header>
                         <strong className="me-auto">Notification</strong>
                     </Toast.Header>

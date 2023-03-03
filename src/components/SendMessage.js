@@ -1,11 +1,7 @@
 import MessageForm from "./message/MessageForm";
 
 const SendMessage = ()=>{
-    return(
-        <>
-        <MessageForm />
-        </>
-    )
+    return <MessageForm />
 }
 
 export default SendMessage;
