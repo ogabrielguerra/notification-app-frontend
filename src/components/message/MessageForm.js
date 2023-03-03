@@ -6,12 +6,17 @@ import Alert from 'react-bootstrap/Alert';
 const MessageForm = () => {
     const [httpsStatusReceived, setHttpStatusReceived] = useState(null);
     const [messageBody, setMessageBody] = useState("")
+    const [formHasError, setFormHasError] = useState(false)
     const [messageChannelId, setMessageCategoryId] = useState(1)
     const [userId, setUserId] = useState(1)
 
     const handleSubmit = (event) => {
         event.preventDefault();
-
+        if(messageBody===""){
+            triggerFormError();
+            return false;
+        } 
+        setFormHasError(false);
         const payload = {};
         payload.body = messageBody;
         payload.category = { id: messageChannelId };
@@ -19,6 +24,13 @@ const MessageForm = () => {
 
         notify(payload);        
         setMessageBody("");
+        setFormHasError(false);
+    }
+
+    const triggerFormError = ()=>{
+        console.log("form error")
+        setHttpStatusReceived(null)
+        setFormHasError(true)
     }
 
     const notify = (payload) => {
@@ -70,11 +82,12 @@ const MessageForm = () => {
             </Form.Group>
 
             <Button className="mt-3" variant="primary" type="submit">Send</Button>
-            {httpsStatusReceived === 201 ? <div className='mt-3'><CustomAlert value='Message sent!'/></div> : <div></div>}
+            {formHasError ? <Alert className='mt-3' variant='danger'>Message body is empty or invalid.</Alert> : null}
+            {httpsStatusReceived === 201 ? <Alert className='mt-3' variant='success'>Message sent!</Alert> : null}
         </Form>
     )
 }
 
 export default MessageForm;
 
-const CustomAlert = ({value})=><Alert variant='success'>{value}</Alert>;
+const CustomAlert = ({value}, {variant})=><Alert variant={variant}>{value}</Alert>;
