@@ -5,10 +5,10 @@ import ErrorPage from './components/ErrorPage';
 import App from './App';
 import Base from './components/Base';
 import SeeMessages from './components/SeeMessages';
-import SendMessage from './components/SendMessage';
 import {
     StompSessionProvider,
 } from "react-stomp-hooks";
+import MessageForm from './components/message/MessageForm';
 
 const urlSocket = 'http://localhost:8080/gs-guide-websocket';
 const router = createBrowserRouter(
@@ -25,7 +25,7 @@ const router = createBrowserRouter(
                 },
                 {
                     path: "/message/send",
-                    element: <StompSessionProvider url={urlSocket}><SendMessage/></StompSessionProvider>,
+                    element: <StompSessionProvider url={urlSocket}><MessageForm/></StompSessionProvider>,
                 },
                 {
                   path: "/message/log",
