@@ -3,15 +3,15 @@ import Badge from 'react-bootstrap/Badge';
 const Row = (props)=>{ 
   
     let data = props.data;
-    const name = data.user.name;
+    const name = data.userName;
     const message = data.body;
-    const channel = data.channel.name;
-    const messageType = data.messageType;
+    const category = data.categoryName;
 
     console.log(data)
     return (
       <>
-        <div><CustomBadge messageType={messageType} /> <b>To {name} from {channel} channel.</b></div>
+        <div><CustomBadge value={category} /></div>
+        <div><b>{name}</b> sent to {category} channel.</div>
         <div>{message}</div> 
         <hr/>
       </>
@@ -20,20 +20,5 @@ const Row = (props)=>{
 
   export default Row;
 
-  const CustomBadge = ({messageType})=>{
-    const messageTypeId = messageType.id;
-    const messageName = messageType.name;
-    let badgeType;
-    if(messageTypeId==1){
-      badgeType = "primary";
-    }else if(messageTypeId==2){
-      badgeType = "secondary";
-    }else{
-      badgeType = "info"
-    }
-
-    return (
-      <Badge bg={badgeType}>{messageName}</Badge>
-    )
-  }
+  const CustomBadge = ({value})=><Badge bg="primary">{value}</Badge>;
   

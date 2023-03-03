@@ -1,7 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import { Container } from 'react-bootstrap';
 import ErrorPage from './components/ErrorPage';
 import App from './App';
 import Base from './components/Base';
@@ -12,7 +11,6 @@ import {
 } from "react-stomp-hooks";
 
 const urlSocket = 'http://localhost:8080/gs-guide-websocket';
-
 const router = createBrowserRouter(
     
     [
@@ -26,11 +24,11 @@ const router = createBrowserRouter(
                     element: <StompSessionProvider url={urlSocket}><App /></StompSessionProvider>,
                 },
                 {
-                    path: "/send-message",
+                    path: "/message/send",
                     element: <StompSessionProvider url={urlSocket}><SendMessage/></StompSessionProvider>,
                 },
                 {
-                  path: "/see-messages",
+                  path: "/message/log",
                   element: <SeeMessages />,
               },
 
@@ -41,4 +39,3 @@ const router = createBrowserRouter(
 ReactDOM.createRoot(document.getElementById("root")).render(
     <RouterProvider router={router} />
 );
-
